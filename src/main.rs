@@ -1,31 +1,14 @@
-use md5::Digest;
 use std::io::{self, BufRead};
 
 const COLOR_BASE: u8 = 128;
 const DELIMETER: &str = "/";
 
-fn main() {
-    let stdin = io::stdin();
-    for line in stdin.lock().lines() {
-        let line = line.expect("¿No?");
-        let colored_line = get_color(line);
-        println!("{}", colored_line);
-    }
-}
-
-fn get_color(str: String) -> String {
-    let colored_str = str.clone();
+fn get_color(str: &String) -> [u8; 3] {
     let digest: [u8; 16] = md5::compute(str).into();
-    let palette = get_palette(digest);
-    print!("{:?}", palette);
-    return colored_str;
-}
-
-fn get_palette(dig: [u8; 16]) -> [u8; 3] {
-    let red = dig[0] % 128;
-    let green = dig[1] % 128;
-    let blue = dig[2] % 128;
-    let palette_nbr = dig[0] % 3;
+    let red = digest[0] % 128;
+    let green = digest[1] % 128;
+    let blue = digest[2] % 128;
+    let palette_nbr = digest[0] % 3;
     match palette_nbr {
         0 => {
             return [
@@ -55,5 +38,34 @@ fn get_palette(dig: [u8; 16]) -> [u8; 3] {
                 COLOR_BASE + 64
             ]
         }
+    }
+}
+
+fn colorize(str: &&str, color: [u8; 3]) -> String {
+    let r = color[0];
+    let g = color[1];
+    let b = color[2];
+    return format!("\u{001B}[0;38;2;{};{};{}m{}\x1b[00m", r, g, b, str);
+}
+
+fn colorize_prompt(str: &&str, color: [u8; 3]) -> String {
+    let r = color[0];
+    let g = color[1];
+    let b = color[2];
+    return format!("\\[\u{001B}[0;38;2;{};{};{}m\\]{}\\[\x1b[00m\\]", r, g, b, str);
+}
+
+fn main() {
+    let stdin = io::stdin();
+    for line in stdin.lock().lines() {
+        let line = line.expect("¿No?");
+        let words: Vec<&str> = line.split(DELIMETER).collect();
+        let mut colored_word: Vec<String> = Vec::new();
+        for (index, word) in words.iter().enumerate() {
+            let ancestors_and_me = &words[..index+1].join("");
+            let color = get_color(ancestors_and_me);
+            colored_word.push(colorize(word, color));
+        }
+        println!("{}", colored_word.join(DELIMETER));
     }
 }

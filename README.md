@@ -6,12 +6,12 @@
 git clone git@github.com:FilipHarald/rainbow-street.git
 cd rainbow-street
 cargo build --release
+mv ./target/release/rainbow-street $HOME/bin/rstrt
 ```
 
 ## try it out
 ```bash
-# run in repo root
-find ~/* | ./target/release/rainbow-street
+find ~/* | rstrt
 ```
 
 ## use in prompt
@@ -19,7 +19,6 @@ Use this in your `.bashrc`.
 ```bash
 promptFunc() {
   if [[ -x $(realpath "$HOME/bin/rstrt") ]]
-  # if type -P node > /dev/null && [[ -x $(realpath "/home/filip/bin/color-path.js") ]]
   then
     WD=`pwd | $HOME/bin/rstrt`
     COLORIZED_DIR=`echo "${WD}" | awk -F/ '{print $NF}'`

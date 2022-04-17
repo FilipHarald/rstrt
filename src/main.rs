@@ -1,4 +1,5 @@
 use std::io::{self, BufRead};
+use std::env;
 
 const COLOR_BASE: u8 = 128;
 const DELIMETER: &str = "/";
@@ -41,21 +42,27 @@ fn get_color(str: &String) -> [u8; 3] {
     }
 }
 
-fn colorize(str: &&str, color: [u8; 3]) -> String {
+fn colorize(str: &&str, color: [u8; 3], escape_prompt: bool) -> String {
     let r = color[0];
     let g = color[1];
     let b = color[2];
-    return format!("\u{001B}[0;38;2;{};{};{}m{}\x1b[00m", r, g, b, str);
-}
-
-fn colorize_prompt(str: &&str, color: [u8; 3]) -> String {
-    let r = color[0];
-    let g = color[1];
-    let b = color[2];
-    return format!("\\[\u{001B}[0;38;2;{};{};{}m\\]{}\\[\x1b[00m\\]", r, g, b, str);
+    if escape_prompt {
+        return format!("\\[\u{001B}[0;38;2;{};{};{}m\\]{}\\[\x1b[00m\\]", r, g, b, str);
+    } else {
+        return format!("\u{001B}[0;38;2;{};{};{}m{}\x1b[00m", r, g, b, str);
+    }
 }
 
 fn main() {
+    let mut escape_prompt = false;
+    for argument in env::args() {
+        if argument == "-p" {
+            escape_prompt = true;
+        }
+        if argument == "-i" {
+            escape_prompt = false;
+        }
+    }
     let stdin = io::stdin();
     for line in stdin.lock().lines() {
         let line = line.expect("¿No?");
@@ -64,7 +71,7 @@ fn main() {
         for (index, word) in words.iter().enumerate() {
             let ancestors_and_me = &words[..index+1].join("");
             let color = get_color(ancestors_and_me);
-            colored_word.push(colorize(word, color));
+            colored_word.push(colorize(word, color, escape_prompt));
         }
         println!("{}", colored_word.join(DELIMETER));
     }

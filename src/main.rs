@@ -1,4 +1,4 @@
-use std::io::{self, BufRead};
+use std::io::{self, BufRead, BufWriter, Write};
 
 const COLOR_BASE: u8 = 128;
 const DELIMETER: &str = "/";
@@ -49,6 +49,7 @@ fn colorize(str: &&str, color: [u8; 3]) -> String {
 }
 
 fn main() {
+    let mut stream = BufWriter::new(io::stdout());
     let stdin = io::stdin();
     for line in stdin.lock().lines() {
         let line = line.expect("¿No?");
@@ -59,6 +60,6 @@ fn main() {
             let color = get_color(ancestors_and_me);
             colored_word.push(colorize(word, color));
         }
-        println!("{}", colored_word.join(DELIMETER));
+        writeln!(&mut stream, "{}", colored_word.join(DELIMETER)).unwrap();
     }
 }

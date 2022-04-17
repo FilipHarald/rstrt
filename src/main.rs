@@ -6,9 +6,9 @@ const DELIMETER: &str = "/";
 
 fn get_color(str: &String) -> [u8; 3] {
     let digest: [u8; 16] = md5::compute(str).into();
-    let red = digest[0] % 128;
-    let green = digest[1] % 128;
-    let blue = digest[2] % 128;
+    let red = digest[0] >> 1;
+    let green = digest[1] >> 1;
+    let blue = digest[2] >> 1;
     let palette_nbr = digest[0] % 3;
     match palette_nbr {
         0 => {

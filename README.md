@@ -8,7 +8,7 @@ Requires [Rust](https://www.rust-lang.org/tools/install).
 git clone git@github.com:FilipHarald/rainbow-street.git
 cd rainbow-street
 cargo build --release
-mv ./target/release/rainbow-street $HOME/bin/rstrt
+cp ./target/release/rainbow-street $HOME/bin/rstrt
 ```
 
 ## Usage

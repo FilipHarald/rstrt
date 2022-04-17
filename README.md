@@ -1,6 +1,8 @@
 # rainbow-street
 
-## Build from source
+## Installation
+### Build from source
+Requires [Rust](https://www.rust-lang.org/tools/install).
 
 ```bash
 git clone git@github.com:FilipHarald/rainbow-street.git
@@ -9,12 +11,13 @@ cargo build --release
 mv ./target/release/rainbow-street $HOME/bin/rstrt
 ```
 
-## try it out
+## Usage
+### When listing files
 ```bash
 find ~/* | rstrt
 ```
 
-## use in prompt
+### Use in prompt
 Use this in your `.bashrc`.
 ```bash
 promptFunc() {

@@ -23,7 +23,7 @@ Use this in your `.bashrc`.
 promptFunc() {
   if [[ -x $(realpath "$HOME/bin/rstrt") ]]
   then
-    WD=`pwd | $HOME/bin/rstrt`
+    WD=`pwd | $HOME/bin/rstrt --ps1-escape`
     COLORIZED_DIR=`echo "${WD}" | awk -F/ '{print $NF}'`
     PS1="\`echo -e \"\[\a\]\[\033[01;32m\]\h\[\033[01;34m\] ${COLORIZED_DIR} \$ \"\`"
   else

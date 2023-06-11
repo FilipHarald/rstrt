@@ -10,14 +10,10 @@ cd rainbow-street
 cargo build --release
 cp ./target/release/rainbow-street $HOME/bin/rstrt
 ```
+(`$HOME/bin` needs to be in your PATH)
 
 ## Usage
-### When listing files
-```bash
-find ~/* | rstrt
-```
-
-### Use in prompt
+### bash-prompt
 Use this in your `.bashrc`.
 ```bash
 promptFunc() {
@@ -33,3 +29,22 @@ promptFunc() {
 PROMPT_COMMAND="promptFunc"
 ```
 
+### listing files
+```bash
+find ~/* | rstrt
+```
+
+### with fzf
+```bash
+find ~/* | rstrt | fzf --ansi
+```
+
+### with fzf in nvim
+```lua
+let cwd = getcwd()
+let $FZF_DEFAULT_COMMAND =  'find '.cwd.' -type f | rstrt'
+let $FZF_DEFAULT_OPTS = '--ansi'
+```
+
+### statusline in nvim
+[rstrt.nvim](https://github.com/FilipHarald/rstrt.nvim)

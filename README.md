@@ -47,4 +47,8 @@ let $FZF_DEFAULT_OPTS = '--ansi'
 ```
 
 ### statusline in nvim
+⚠ DEPRECATED ⚠
+
+```lua
+
 [rstrt.nvim](https://github.com/FilipHarald/rstrt.nvim)

@@ -1,11 +1,16 @@
 const COLOR_BASE: u8 = 128;
 
-pub fn get_true_color(str: &String) -> [u8; 3] {
+pub fn get_true_color(str: &String, is_dark_text: bool) -> [u8; 3] {
     let digest: [u8; 16] = md5::compute(str).into();
-    let red = digest[0] >> 1;
-    let green = digest[1] >> 1;
-    let blue = digest[2] >> 1;
+    let mut red = digest[0] >> 1;
+    let mut green = digest[1] >> 1;
+    let mut blue = digest[2] >> 1;
     let palette_nbr = digest[0] % 3;
+    if is_dark_text {
+        red = 255 - red;
+        green = 255 - green;
+        blue = 255 - blue;
+    }
     match palette_nbr {
         0 => {
             return [

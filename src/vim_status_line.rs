@@ -39,7 +39,7 @@ impl std::fmt::Debug for VimStatusLine {
     }
 }
 
-pub fn build_status_line(delimiter: &str, file_path: &str, cwd: &str) {
+pub fn build_status_line(delimiter: &str, file_path: &str, cwd: &str, is_dark_text: bool) {
     let mut stream = BufWriter::new(io::stdout());
 
     let mut status_line_obj: VimStatusLine = VimStatusLine {
@@ -68,7 +68,7 @@ pub fn build_status_line(delimiter: &str, file_path: &str, cwd: &str) {
         let ancestors_and_me = &words[..index + 1].join("");
         if index >= build_path_from_index {
             if index >= colorize_from_index {
-                let color = get_true_color(ancestors_and_me);
+                let color = get_true_color(ancestors_and_me, is_dark_text);
                 let xterm_definition = VimHighlight {
                     foreground: format!("#{:02x}{:02x}{:02x}", color[0], color[1], color[2]),
                 };

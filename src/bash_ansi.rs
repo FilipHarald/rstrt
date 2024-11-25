@@ -31,7 +31,7 @@ fn colorize(str: &&str, color: [u8; 3], escape_ps1: bool) -> String {
     return res;
 }
 
-pub fn colorize_strings(is_ps1_escape: bool, delimiter: &str) {
+pub fn colorize_strings(is_ps1_escape: bool, delimiter: &str, is_dark_text: bool) {
     let mut stream = BufWriter::new(io::stdout());
     let stdin = io::stdin();
     for line in stdin.lock().lines() {
@@ -40,7 +40,7 @@ pub fn colorize_strings(is_ps1_escape: bool, delimiter: &str) {
         let mut colored_word: Vec<String> = Vec::new();
         for (index, word) in words.iter().enumerate() {
             let ancestors_and_me = &words[..index + 1].join("");
-            let color = get_true_color(ancestors_and_me);
+            let color = get_true_color(ancestors_and_me, is_dark_text);
             colored_word.push(colorize(word, color, is_ps1_escape));
         }
         writeln!(&mut stream, "{}", colored_word.join(delimiter)).unwrap();

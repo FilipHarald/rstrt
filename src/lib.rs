@@ -7,9 +7,9 @@ pub fn get_true_color(str: &String, is_dark_text: bool) -> [u8; 3] {
     let mut blue = digest[2] >> 1;
     let palette_nbr = digest[0] % 3;
     if is_dark_text {
-        red = 255 - red;
-        green = 255 - green;
-        blue = 255 - blue;
+        red = 245 - red;
+        green = 245 - green;
+        blue = 245 - blue;
     }
     match palette_nbr {
         0 => {
